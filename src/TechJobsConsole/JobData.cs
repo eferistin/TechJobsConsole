@@ -49,7 +49,7 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                if (aValue.ToLower().Contains(value.ToLower())) // ensure the input from the user is cap sensitive 
                 {
                     jobs.Add(row);
                 }
@@ -137,6 +137,35 @@ namespace TechJobsConsole
             valueBuilder.Clear();
 
             return rowValues.ToArray();
+        }
+
+        public static List<Dictionary<string, string>> FindByValue(string mysearch)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> findjobs = new List<Dictionary<string, string>>();
+
+          
+            foreach (Dictionary<string, string> row in AllJobs) // looping thru list of dictionaries
+            {
+                string coming="";
+                foreach (KeyValuePair<string, string> thejob in row) // looping thru individual list
+                {
+                     coming += thejob.Value.ToLower(); // creating a string of values taken from the Dictionary KeyValuePair, in order to user Contains() function
+                                                       // Contains() function can be use for strings and list that holds strings
+                                                       // also lower case the variable representing the terms actually found in the dictionary, and it to make it case sentitive
+                }
+//string aValue = row[column];
+
+                
+                if (coming.Contains(mysearch.ToLower()))  //searching using the Contains() function to check the user input is in the database, also lowercase to make it case sentitive for the user input
+                {
+                    findjobs.Add(row);
+                }
+            }
+
+            return findjobs;
         }
     }
 }
